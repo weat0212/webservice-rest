@@ -1,6 +1,11 @@
 package com.example.mobilewebservice.api;
 
-public class AddressDto {
+import lombok.Getter;
+import lombok.Setter;
+
+@Setter
+@Getter
+public class AddressDto{
 
     private Long id;
 

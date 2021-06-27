@@ -5,14 +5,12 @@ import com.example.mobilewebservice.models.request.User;
 import com.example.mobilewebservice.models.response.UserRest;
 import com.example.mobilewebservice.services.UserService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("/users")
 public class UserController {
 
-    @Autowired
     UserService userService;
 
     @GetMapping

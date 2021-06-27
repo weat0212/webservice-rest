@@ -1,11 +1,17 @@
 package com.example.mobilewebservice.models.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.*;
+import java.io.Serializable;
+
+@Getter
+@Setter
 @Entity(name = "addresses")
-public class AddressEntity {
+public class AddressEntity implements Serializable {
+
+    private static final long serialVersionUID = -7973257537252403477L;
 
     @Id
     @GeneratedValue
@@ -13,12 +19,7 @@ public class AddressEntity {
 
     private String address;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+//    @ManyToOne
+//    private UserEntity userEntity;
 
-    @Id
-    public Long getId() {
-        return id;
-    }
 }

@@ -1,13 +1,17 @@
 package com.example.mobilewebservice.models.entity;
 
+import lombok.Data;
+;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Entity(name="users")
+@Entity
+@Table(name = "users")
+@Data
 public class UserEntity implements Serializable {
 
-    private static final long serialVersionUID = -1967650512703100556L;
+    private static final long serialVersionUID = -3785985345579677432L;
 
     @Id
     @GeneratedValue
@@ -33,8 +37,8 @@ public class UserEntity implements Serializable {
     @Column(nullable = false)
     private Boolean emailVerificationStatus = false;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<AddressEntity> addresses;
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    private List<AddressEntity> addresses;
 
     public long getId() {
         return id;
