@@ -26,7 +26,7 @@ public class UserEntity implements Serializable {
     @Column(nullable = false, length = 50)
     private String lastName;
 
-    @Column(nullable = false, length = 120)
+    @Column(nullable = false, length = 120, unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -37,7 +37,8 @@ public class UserEntity implements Serializable {
     @Column(nullable = false)
     private Boolean emailVerificationStatus = false;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    //TODO : BUG
+//    @OneToMany(mappedBy = "users", cascade = CascadeType.ALL)
 //    private List<AddressEntity> addresses;
 
     public long getId() {

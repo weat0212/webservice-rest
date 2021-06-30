@@ -8,14 +8,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("/users")
 public class UserController {
 
     UserService userService;
 
     @GetMapping
     public String getUser() {
-        return "";
+        return "Get User";
     }
 
     @PostMapping
@@ -34,11 +34,11 @@ public class UserController {
 
     @PutMapping
     public String updateUser() {
-        return "";
+        return "Update User";
     }
 
     @DeleteMapping
     public String deleteUser() {
-        return "";
+        return "Delete User";
     }
 }

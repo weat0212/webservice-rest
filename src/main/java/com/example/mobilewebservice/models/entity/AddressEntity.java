@@ -19,7 +19,7 @@ public class AddressEntity implements Serializable {
 
     private String address;
 
-//    @ManyToOne
-//    private UserEntity userEntity;
+    @ManyToOne
+    private UserEntity userEntity;
 
 }
