@@ -1,10 +1,8 @@
 package com.example.mobilewebservice.models.request;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
-@Getter
-@Setter
+@Data
 public class User {
 
     private String firstName;

@@ -1,29 +1,59 @@
 package com.example.mobilewebservice.services;
 
 import com.example.mobilewebservice.api.UserDto;
+import com.example.mobilewebservice.api.Utils;
 import com.example.mobilewebservice.models.entity.UserEntity;
 import com.example.mobilewebservice.repositories.UserRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.BeanUtils;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     UserRepository userRepository;
 
+    Utils utils;
+
+    public UserServiceImpl(UserRepository userRepository, Utils utils) {
+        this.userRepository = userRepository;
+        this.utils = utils;
+    }
+
     @Override
     public UserDto createUser(UserDto userDto) {
 
-        UserEntity userEntity = new UserEntity();
-        BeanUtils.copyProperties(userDto, userEntity);
+        if (userRepository.findByEmail(userDto.getEmail()) != null) throw new RuntimeException("Record already Exists");
 
+        ModelMapper modelMapper = new ModelMapper();
+        UserEntity userEntity = modelMapper.map(userDto, UserEntity.class);
+
+        String publicUserId = utils.generateUserId(30);
+        userEntity.setUserId(publicUserId);
         userEntity.setEncryptedPassword("test");
-        userEntity.setUserId("testUserId");
+        userEntity.setEmailVerificationToken("123");
 
         UserEntity storedUserDetails = userRepository.save(userEntity);
-        UserDto returnValue = new UserDto();
-        BeanUtils.copyProperties(storedUserDetails, returnValue);
+        UserDto returnValue = modelMapper.map(storedUserDetails, UserDto.class);
 
         return returnValue;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        UserEntity userEntity = userRepository.findByEmail(email);
+
+        if (userEntity == null)
+            throw new UsernameNotFoundException(email);
+
+        return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(),
+                userEntity.getEmailVerificationStatus(),
+                true, true,
+                true, new ArrayList<>());
     }
 }

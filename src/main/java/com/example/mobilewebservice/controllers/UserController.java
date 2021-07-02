@@ -4,30 +4,38 @@ import com.example.mobilewebservice.api.UserDto;
 import com.example.mobilewebservice.models.request.User;
 import com.example.mobilewebservice.models.response.UserRest;
 import com.example.mobilewebservice.services.UserService;
-import org.springframework.beans.BeanUtils;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
-    UserService userService;
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public String getUser() {
         return "Get User";
     }
 
-    @PostMapping
-    public UserRest createUser(@RequestBody User userDetails) {
+    @PostMapping(consumes = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE }, produces = {
+            MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    @ResponseBody
+    public UserRest createUser(@RequestBody User userDetails) throws Exception {
 
-        UserRest returnValue = new UserRest();
-        UserDto userDto = new UserDto();
-        // copy userDetails to userDto
-        BeanUtils.copyProperties(userDetails, userDto);
+        ModelMapper modelMapper = new ModelMapper();
 
+        UserDto userDto = modelMapper.map(userDetails, UserDto.class);
         UserDto createdUser = userService.createUser(userDto);
-        BeanUtils.copyProperties(createdUser, returnValue);
+
+        UserRest returnValue = modelMapper.map(createdUser, UserRest.class);
 
         return returnValue;
     }
